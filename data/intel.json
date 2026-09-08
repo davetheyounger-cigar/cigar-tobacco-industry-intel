@@ -1,185 +1,71 @@
 {
-  "generated_at": "2026-09-08T00:00:00Z",
-  "mode": "seed",
+  "updated": "2026-09-08",
   "items": [
     {
-      "id": "seed-cuba-s-cigar-paradox",
-      "priority": "critical",
-      "country": "Cuba",
-      "stage": "Supply",
+      "title": "Plasencia unveils next chapter of brand evolution",
       "source": "Cigar Journal",
-      "title": "Cuba's Cigar Paradox",
-      "description": "Record Habanos revenue is occurring alongside shrinking physical supply and continuing production/infrastructure constraints.",
-      "url": "https://www.cigarjournal.com/cubas-cigar-paradox/",
-      "date": "2026-09-08",
-      "automatic": false
-    },
-    {
-      "id": "seed-pinar-del-r-o-campaign-closes-with-11-400-hectares",
-      "priority": "critical",
-      "country": "Cuba",
-      "stage": "Field / crop",
-      "source": "Granma",
-      "title": "Pinar del Río campaign closes with 11,400+ hectares",
-      "description": "The 2025–26 campaign finished below the original plan after rain, energy and drought problems.",
-      "url": "https://www.granma.cu/cuba/2026-03-16/con-mas-de-11-400-hectareas-cierran-siembras-de-campana-tabacalera-en-pinar-del-rio-15-03-2026-16-03-51",
-      "date": "2026-03-16",
-      "automatic": false
-    },
-    {
-      "id": "seed-drew-estate-announces-drew-dominicana",
-      "priority": "high",
-      "country": "Dominican Republic",
-      "stage": "Factory",
-      "source": "Drew Estate",
-      "title": "Drew Estate announces Drew Dominicana",
-      "description": "A planned 73,000 sq. ft. compound and exclusive farm in Villa González would be Drew Estate's first production outside Nicaragua.",
-      "url": "https://drewestate.com/411-news/announcing-drew-dominicana-new-drew-estate-farm-and-factory/",
-      "date": "2026-04-17",
-      "automatic": false
-    },
-    {
-      "id": "seed-tobacco-irrigation-modernization",
-      "priority": "high",
-      "country": "Dominican Republic",
-      "stage": "Field / crop",
-      "source": "Dominican Presidency",
-      "title": "Tobacco irrigation modernization",
-      "description": "Irrigation technology, training and technical support are being strengthened for tobacco growers.",
-      "url": "https://presidencia.gob.do/noticias/tnr-e-intabaco-firman-acuerdo-para-promover-tecnificacion-del-riego-y-fortalecer",
-      "date": "2026-07-08",
-      "automatic": false
-    },
-    {
-      "id": "seed-2025-26-harvest-160-000-tareas-planted",
-      "priority": "high",
-      "country": "Dominican Republic",
-      "stage": "Field / crop",
-      "source": "INTABACO",
-      "title": "2025–26 harvest: 160,000+ tareas planted",
-      "description": "INTABACO reported more than 160,000 tareas planted across 29 tobacco zones and 15 provinces.",
-      "url": "https://intabaco.gob.do/noticias/intabaco-inicia-cosecha-tabacalera-2025-2026-con-siembra-de-mas-de-160-mil-tareas/",
-      "date": "2026",
-      "automatic": false
-    },
-    {
-      "id": "seed-plasencia-born-of-this-land",
-      "priority": "high",
-      "country": "Nicaragua",
-      "stage": "Blending / release",
-      "source": "Cigar Journal",
-      "title": "Plasencia — Born of This Land",
-      "description": "A major brand-evolution announcement. Watch for subsequent blend, tobacco, production and distribution implications.",
-      "url": "https://www.cigarjournal.com/plasencia-cigars-unveils-the-next-chapter-of-its-brand-evolution/",
       "date": "2026-09-07",
-      "automatic": false
+      "country": "Nicaragua",
+      "stage": "BLENDING",
+      "priority": "MEDIUM",
+      "type": "Brand / Release",
+      "url": "https://www.cigarjournal.com/plasencia-cigars-unveils-the-next-chapter-of-its-brand-evolution/",
+      "why": "Signals a major brand evolution tied to Plasencia's long tobacco-growing history."
     },
     {
-      "id": "seed-strong-el-ni-o-developing-for-2026-27",
-      "priority": "high",
-      "country": "Global",
-      "stage": "Field / crop",
-      "source": "Reuters",
-      "title": "Strong El Niño developing for 2026–27",
-      "description": "A strong El Niño could alter rainfall and temperature patterns across tropical agricultural regions. Climate watch only; not proof of tobacco damage.",
-      "url": "https://www.reuters.com/business/environment/strong-el-nino-developing-weather-agencies-say-2026-08-18/",
+      "title": "Drew Estate announces Drew Dominicana farm and factory",
+      "source": "Drew Estate",
       "date": "2026-08-18",
-      "automatic": false
-    },
-    {
-      "id": "seed-san-juan-valley-2026-27-crop-planning",
-      "priority": "medium",
       "country": "Dominican Republic",
-      "stage": "Field / crop",
-      "source": "INTABACO",
-      "title": "San Juan Valley 2026–27 crop planning",
-      "description": "Planning includes financing, technical assistance, commercialization and producer training.",
-      "url": "https://intabaco.gob.do/noticias/fortalecen-acciones-para-el-cultivo-de-tabaco-en-el-valle-de-san-juan/",
-      "date": "2026",
-      "automatic": false
+      "stage": "FACTORY",
+      "priority": "HIGH",
+      "type": "Factory / Farm",
+      "url": "https://drewestate.com/411-news/announcing-drew-dominicana-new-drew-estate-farm-and-factory/",
+      "why": "Drew Estate's first production operation outside Nicaragua expands its upstream tobacco and manufacturing footprint."
     },
     {
-      "id": "seed-integrated-pest-management-operations",
-      "priority": "medium",
+      "title": "Dominican tobacco exports increased in 2025",
+      "source": "INTABACO",
+      "date": "2026-07-08",
       "country": "Dominican Republic",
-      "stage": "Field / crop",
-      "source": "INTABACO",
-      "title": "Integrated pest-management operations",
-      "description": "Agricultural-veda operations in Montecristi are part of the crop-protection picture.",
-      "url": "https://intabaco.gob.do/noticias/intabaco-participa-en-operativos-de-veda-agricola-2026/",
-      "date": "2026",
-      "automatic": false
+      "stage": "SUPPLY",
+      "priority": "MEDIUM",
+      "type": "Trade / Supply",
+      "url": "https://intabaco.gob.do/noticias/exportaciones-de-tabaco-de-rd-se-incrementan-mas-de-1000-millones-de-pesos-en-2025-informa-intabaco/",
+      "why": "Export growth is a useful indicator of tobacco-sector demand and supply conditions."
     },
     {
-      "id": "seed-post-harvest-mildew-risk-research",
-      "priority": "medium",
-      "country": "Global",
-      "stage": "Curing / fermentation",
-      "source": "Industrial Crops and Products",
-      "title": "Post-harvest mildew risk research",
-      "description": "Research proposes a Mold Risk Index for post-harvest cigar-tobacco conditions, reinforcing the importance of humidity and storage controls.",
-      "url": "https://www.sciencedirect.com/science/article/pii/S0926669026012604",
-      "date": "2026-08",
-      "automatic": false
+      "title": "Dominican irrigation modernization agreement",
+      "source": "Presidencia de la República Dominicana",
+      "date": "2026-07-08",
+      "country": "Dominican Republic",
+      "stage": "FIELD",
+      "priority": "MEDIUM",
+      "type": "Agriculture",
+      "url": "https://presidencia.gob.do/noticias/tnr-e-intabaco-firman-acuerdo-para-promover-tecnificacion-del-riego-y-fortalecer",
+      "why": "Irrigation investment can affect crop resilience and future leaf quality."
     },
     {
-      "id": "seed-connecticut-tobacco-farmers-adapt",
-      "priority": "medium",
-      "country": "United States",
-      "stage": "Field / crop",
-      "source": "CT Mirror",
-      "title": "Connecticut tobacco farmers adapt",
-      "description": "Reporting highlights Connecticut Shade/Broadleaf acreage and premium-cigar contracting.",
-      "url": "https://ctmirror.org/2025/08/10/ct-shade-tobacco-farmers-cigars/",
-      "date": "2025-08-10",
-      "automatic": false
+      "title": "Cuba's cigar paradox: record revenues, constrained physical supply",
+      "source": "Cigar Journal",
+      "date": "2026-09-08",
+      "country": "Cuba",
+      "stage": "SUPPLY",
+      "priority": "HIGH",
+      "type": "Industry / Supply",
+      "url": "https://www.cigarjournal.com/cubas-cigar-paradox/",
+      "why": "Highlights the tension between strong revenue and shrinking physical supply in the Cuban cigar sector."
+    },
+    {
+      "title": "Strong El Niño developing for 2026-27",
+      "source": "Reuters",
+      "date": "2026-08-18",
+      "country": "GLOBAL",
+      "stage": "WEATHER",
+      "priority": "MEDIUM",
+      "type": "Weather / Climate",
+      "url": "https://www.reuters.com/business/environment/strong-el-nino-developing-weather-agencies-say-2026-08-18/",
+      "why": "A major El Niño can alter rainfall and temperature patterns in tropical agricultural regions; tobacco impacts require regional verification."
     }
-  ],
-  "source_feeds": [
-    [
-      "Cigar Journal",
-      "Industry and cigar news",
-      "https://www.cigarjournal.com/category/cigar-news/"
-    ],
-    [
-      "Smokin Tabacco",
-      "Industry news and manufacturer coverage",
-      "https://www.smokintabacco.com/"
-    ],
-    [
-      "Premium Cigar Association",
-      "Trade news",
-      "https://premiumcigars.org/news/"
-    ],
-    [
-      "PCA Product Releases",
-      "New product announcements",
-      "https://premiumcigars.org/product-releases/"
-    ],
-    [
-      "Cigar Snob",
-      "Industry news",
-      "https://www.cigarsnobmag.com/news/"
-    ],
-    [
-      "Cigar Dojo",
-      "News and press releases",
-      "https://cigardojo.com/category/news/"
-    ],
-    [
-      "Developing Palates",
-      "Cigar industry news",
-      "https://developingpalates.com/category/cigar-news/"
-    ],
-    [
-      "Humidorist",
-      "Cigar news",
-      "https://www.humidorist.com/cigar-news/"
-    ],
-    [
-      "Cigar World",
-      "Industry news",
-      "https://www.cigarworld.com/news/"
-    ]
   ]
 }
