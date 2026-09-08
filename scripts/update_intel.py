@@ -12,8 +12,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "intel.json"
 
-# Keep the manually curated intelligence anchors.
+# V15.3: the automatic database is rebuilt from scratch every run.
+# Curated anchors are retained; stale/incorrect automatic records cannot survive.
+
 SEED = [
+    {
+        "id": "seed-pinar-del-rio",
+        "priority": "critical",
+        "country": "Cuba",
+        "stage": "Field / crop",
+        "source": "Granma",
+        "title": "Pinar del Río campaign closes with 11,400+ hectares",
+        "description": "The 2025–26 campaign finished below the original plan after rain, energy and drought problems.",
+        "url": "https://www.granma.cu/cuba/2026-03-16/con-mas-de-11-400-hectareas-cierran-siembras-de-campana-tabacalera-en-pinar-del-rio-15-03-2026-16-03-51",
+        "date": "2026-03-16",
+        "automatic": False
+    },
     {
         "id": "seed-cuba-paradox",
         "priority": "critical",
@@ -24,18 +38,6 @@ SEED = [
         "description": "Record Habanos revenue is occurring alongside shrinking physical supply and continuing production/infrastructure constraints.",
         "url": "https://www.cigarjournal.com/cubas-cigar-paradox/",
         "date": "2026-09-08",
-        "automatic": False
-    },
-    {
-        "id": "seed-pinar-del-rio",
-        "priority": "critical",
-        "country": "Cuba",
-        "stage": "Field / crop",
-        "source": "Granma",
-        "title": "Pinar del Río campaign closes with 11,400+ hectares",
-        "description": "The 2025–26 campaign finished below the original plan after rain, energy and drought problems.",
-        "url": "https://www.granma.cu/cuba/2026-03-16/con-mas-de-11.400-hectareas-cierran-siembras-de-campana-tabacalera-en-pinar-del-rio-15-03-2026-16-03-51",
-        "date": "2026-03-16",
         "automatic": False
     },
     {
@@ -87,18 +89,6 @@ SEED = [
         "automatic": False
     },
     {
-        "id": "seed-climate",
-        "priority": "medium",
-        "country": "Global",
-        "stage": "Weather",
-        "source": "Reuters",
-        "title": "Strong El Niño developing for 2026–27",
-        "description": "A strong El Niño could alter rainfall and temperature patterns across tropical agricultural regions. Climate watch only; not proof of tobacco damage.",
-        "url": "https://www.reuters.com/business/environment/strong-el-nino-developing-weather-agencies-say-2026-08-18/",
-        "date": "2026-08-18",
-        "automatic": False
-    },
-    {
         "id": "seed-san-juan",
         "priority": "medium",
         "country": "Dominican Republic",
@@ -123,6 +113,18 @@ SEED = [
         "automatic": False
     },
     {
+        "id": "seed-climate",
+        "priority": "medium",
+        "country": "Global",
+        "stage": "Weather",
+        "source": "Reuters",
+        "title": "Strong El Niño developing for 2026–27",
+        "description": "A strong El Niño could alter rainfall and temperature patterns across tropical agricultural regions. Climate watch only; not proof of tobacco damage.",
+        "url": "https://www.reuters.com/business/environment/strong-el-nino-developing-weather-agencies-say-2026-08-18/",
+        "date": "2026-08-18",
+        "automatic": False
+    },
+    {
         "id": "seed-mildew",
         "priority": "medium",
         "country": "Global",
@@ -136,12 +138,11 @@ SEED = [
     }
 ]
 
-RSS_FEEDS = [
+FEEDS = [
     ("Cigar Snob", "https://www.cigarsnobmag.com/feed/"),
     ("Developing Palates", "https://developingpalates.com/feed/")
 ]
 
-# Terms that identify actual premium-cigar/tobacco supply-chain relevance.
 STRONG = [
     "premium cigar", "premium cigars", "handmade cigar", "handmade cigars",
     "cigar tobacco", "cigar leaf", "cigar wrapper", "wrapper leaf",
@@ -153,10 +154,11 @@ STRONG = [
     "tobacco supply", "tobacco acreage", "tobacco disease", "tobacco pest",
     "tobacco mildew", "tobacco mold", "tobacco variety", "tobacco seed",
     "leaf tobacco", "broadleaf", "connecticut shade", "corojo",
-    "criollo", "havanensis", "san andrés", "san andres", "mata fina"
+    "criollo", "havanensis", "san andrés", "san andres", "mata fina",
+    "estelí", "esteli", "jalapa", "jamastrán", "jamastran", "pinar del río",
+    "pinar del rio", "vuelta abajo", "habanos"
 ]
 
-# Generic stories are excluded unless they have several strong cigar signals.
 GENERIC = [
     "cigarette consumption", "cigarette sales", "cigarette smoking",
     "smoking prevalence", "smoking cessation", "smoking rates",
@@ -199,15 +201,6 @@ STAGE = {
     ]
 }
 
-CRITICAL = [
-    "crop failure", "major crop loss", "factory fire", "factory closure",
-    "factory shutdown", "production halted", "production suspended",
-    "leaf shortage", "tobacco shortage", "supply disruption",
-    "major disease outbreak", "major pest outbreak", "blue mold outbreak",
-    "major hurricane", "drought emergency", "major flood", "acquisition",
-    "merger", "ownership change"
-]
-
 HIGH = [
     "significant crop loss", "crop damage", "harvest damage",
     "hurricane", "drought", "flood", "disease outbreak", "pest outbreak",
@@ -228,7 +221,7 @@ MEDIUM = [
 def fetch(url):
     req = urllib.request.Request(
         url,
-        headers={"User-Agent": "Cigar-Tobacco-Industry-Intel/15.2"}
+        headers={"User-Agent": "Cigar-Tobacco-Industry-Intel/15.3"}
     )
     with urllib.request.urlopen(req, timeout=30) as response:
         return response.read()
@@ -265,8 +258,7 @@ def parse_feed(source, url):
                     "title": title,
                     "description": description[:1500],
                     "url": link,
-                    "date_raw": pub,
-                    "date_dt": parse_date(pub)
+                    "date": parse_date(pub)
                 })
     except Exception as error:
         print(f"RSS failed for {source}: {error}")
@@ -282,69 +274,48 @@ def google_news(query):
     return parse_feed("Google News Discovery", url)
 
 
-def count_hits(text, terms):
+def hits(text, terms):
     return sum(1 for term in terms if term in text)
 
 
-def is_relevant(title, description):
+def relevant(title, description):
     text = (title + " " + description).lower()
-    strong_hits = count_hits(text, STRONG)
-    generic_hits = count_hits(text, GENERIC)
+    strong_hits = hits(text, STRONG)
+    generic_hits = hits(text, GENERIC)
 
-    # Hard gate: a generic cigarette/public-health story must have
-    # multiple strong premium-cigar signals.
     if generic_hits and strong_hits < 3:
         return False
 
-    # No premium-cigar/tobacco supply-chain signal = reject.
-    if strong_hits < 1:
-        return False
-
-    return True
+    return strong_hits >= 1
 
 
-def classify(title, description, source):
+def classify(title, description):
     text = (title + " " + description).lower()
-    stage_hits = []
 
-    for name, terms in STAGE.items():
-        hits = count_hits(text, terms)
-        if hits:
-            stage_hits.append((hits, name))
+    stage_counts = []
+    for stage, terms in STAGE.items():
+        count = hits(text, terms)
+        if count:
+            stage_counts.append((count, stage))
 
-    stage = max(stage_hits)[1] if stage_hits else "Industry"
+    stage = max(stage_counts)[1] if stage_counts else "Industry"
 
-    critical_hits = count_hits(text, CRITICAL)
-    high_hits = count_hits(text, HIGH)
-    medium_hits = count_hits(text, MEDIUM)
+    # Automatic discovery is deliberately conservative.
+    high_hits = hits(text, HIGH)
+    medium_hits = hits(text, MEDIUM)
+    strong_hits = hits(text, STRONG)
 
-    # Critical requires either an explicit severe event plus a strong
-    # cigar/tobacco signal, or two independent severe signals.
-    strong_hits = count_hits(text, STRONG)
-
-    if critical_hits >= 2 or (critical_hits >= 1 and strong_hits >= 2):
-        priority = "critical"
-    elif high_hits >= 2 or (high_hits >= 1 and strong_hits >= 2):
+    if high_hits >= 2 and strong_hits >= 2:
         priority = "high"
     elif medium_hits >= 1:
         priority = "medium"
     else:
         priority = "low"
 
-    # Automatic discovery is deliberately capped at HIGH unless a story
-    # contains unmistakable multi-signal disruption language.
-    if priority == "critical" and critical_hits < 2:
-        priority = "high"
-
-    # Never allow Google News discovery to make something critical from
-    # a single keyword.
-    if source == "Google News Discovery" and priority == "critical":
-        priority = "high"
-
     country = "Global"
-    country_terms = {
-        "Nicaragua": ["nicaragua", "esteli", "estelí", "jalapa", "condega", "con dega"],
-        "Honduras": ["honduras", "danli", "danlí", "jamastran", "jamastrán", "talanga"],
+    countries = {
+        "Nicaragua": ["nicaragua", "estelí", "esteli", "jalapa", "condega"],
+        "Honduras": ["honduras", "danlí", "danli", "jamastrán", "jamastran", "talanga"],
         "Dominican Republic": ["dominican republic", "villa gonzalez", "villa gonzález", "mao", "san juan"],
         "Ecuador": ["ecuador", "los rios", "los ríos", "quevedo"],
         "Mexico": ["mexico", "méxico", "san andres tuxtla", "san andrés tuxtla"],
@@ -353,7 +324,7 @@ def classify(title, description, source):
         "United States": ["connecticut", "pennsylvania", "kentucky", "tennessee", "connecticut broadleaf"]
     }
 
-    for name, terms in country_terms.items():
+    for name, terms in countries.items():
         if any(term in text for term in terms):
             country = name
             break
@@ -361,42 +332,20 @@ def classify(title, description, source):
     return country, stage, priority
 
 
-def make_id(title, url):
-    return "auto-" + re.sub(r"[^a-z0-9]+", "-", (title + "|" + url).lower()).strip("-")[:110]
+def item_id(title, url):
+    return "auto-" + re.sub(
+        r"[^a-z0-9]+", "-", (title + "|" + url).lower()
+    ).strip("-")[:110]
 
 
 def main():
-    print("Starting V15.2 intelligence update...")
+    print("V15.3: rebuilding automatic intelligence database from scratch.")
 
-    existing = []
-    if OUT.exists():
-        try:
-            existing = json.loads(
-                OUT.read_text(encoding="utf-8")
-            ).get("items", [])
-        except Exception as error:
-            print("Could not read existing database:", error)
-
-    # Keep curated anchors and only relevant recent automatic items.
-    final = {x["id"]: x for x in SEED}
     cutoff = datetime.now(timezone.utc) - timedelta(days=45)
 
-    for item in existing:
-        if not item.get("automatic"):
-            final[item.get("id")] = item
-            continue
-
-        if not is_relevant(item.get("title", ""), item.get("description", "")):
-            continue
-
-        # Old automatic discovery items are removed. This prevents a 2023
-        # article surfaced by Google News from becoming today's signal.
-        raw = item.get("date", "")
-        dt = parse_date(raw)
-        if dt and dt < cutoff:
-            continue
-
-        final[item.get("id") or make_id(item.get("title", ""), item.get("url", ""))] = item
+    # Start ONLY with curated anchors. This intentionally discards all old
+    # automatic records, which fixes stale/bad records surviving old versions.
+    final = {x["id"]: x for x in SEED}
 
     queries = [
         '"premium cigar" tobacco farm harvest',
@@ -418,13 +367,14 @@ def main():
     ]
 
     discovered = []
-    for q in queries:
-        print("Checking:", q)
-        discovered.extend(google_news(q))
 
-    for source, feed_url in RSS_FEEDS:
+    for query in queries:
+        print("Checking:", query)
+        discovered.extend(google_news(query))
+
+    for source, url in FEEDS:
         print("Checking:", source)
-        discovered.extend(parse_feed(source, feed_url))
+        discovered.extend(parse_feed(source, url))
 
     accepted = 0
     rejected = 0
@@ -433,23 +383,21 @@ def main():
     for article in discovered:
         title = article["title"]
         description = article["description"]
+        dt = article["date"]
 
-        if not is_relevant(title, description):
+        if not relevant(title, description):
             rejected += 1
             continue
 
-        # For automatic discovery, require a real recent publication date.
-        dt = article.get("date_dt")
+        # Automatic discovery must have a real recent publication date.
         if dt is None or dt < cutoff:
             stale += 1
             continue
 
-        country, stage, priority = classify(
-            title, description, article["source"]
-        )
+        country, stage, priority = classify(title, description)
 
         item = {
-            "id": make_id(title, article["url"]),
+            "id": item_id(title, article["url"]),
             "priority": priority,
             "country": country,
             "stage": stage,
@@ -465,23 +413,18 @@ def main():
         final[item["id"]] = item
         accepted += 1
 
-    # Deduplicate URLs.
-    by_url = {}
+    # URL deduplication.
+    unique = {}
     for item in final.values():
         if item.get("url"):
-            by_url[item["url"]] = item
+            unique[item["url"]] = item
 
-    items = list(by_url.values())
+    items = list(unique.values())
 
+    # Sort curated and automatic data so the dashboard gets meaningful order.
     rank = {"critical": 0, "high": 1, "medium": 2, "low": 3}
 
-    # Curated seeds remain first and can be older. Automatic discoveries are
-    # recent-only and sorted newest first within priority.
-    seed_ids = {x["id"] for x in SEED}
-    seeds = [x for x in items if x.get("id") in seed_ids]
-    autos = [x for x in items if x.get("id") not in seed_ids]
-
-    autos.sort(
+    items.sort(
         key=lambda x: (
             rank.get(x.get("priority", "low"), 9),
             x.get("date", "")
@@ -489,55 +432,49 @@ def main():
         reverse=False
     )
 
-    # Re-sort with priority ascending, date descending.
-    autos.sort(
-        key=lambda x: (
-            rank.get(x.get("priority", "low"), 9),
-            x.get("date", "")
-        ),
-        reverse=False
-    )
-
-    # For each priority, newest first.
+    # Within each priority, newest first.
     grouped = []
-    for p in ["critical", "high", "medium", "low"]:
-        group = [x for x in autos if x.get("priority") == p]
+    for priority in ["critical", "high", "medium", "low"]:
+        group = [x for x in items if x.get("priority") == priority]
         group.sort(key=lambda x: x.get("date", ""), reverse=True)
         grouped.extend(group)
 
-    autos = grouped[:300]
+    # Hard upper bound.
+    grouped = grouped[:250]
 
-    output = {
+    payload = {
+        "updated": datetime.now(timezone.utc).isoformat(),
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "mode": "github-actions-v15.2",
+        "mode": "github-actions-v15.3",
         "filter": {
             "focus": "premium cigar tobacco supply chain",
             "automatic_window_days": 45,
+            "automatic_database_rebuilt": True,
             "generic_exclusions": "cigarette consumption, smoking prevalence, vaping, nicotine and public-health stories unless strongly tied to premium cigars",
-            "automatic_critical_cap": "Google News discovery cannot create CRITICAL priority; critical status is reserved for curated intelligence.",
+            "automatic_critical": False,
             "verification": "Automatic items are discovery leads, not confirmed intelligence."
         },
         "stats": {
             "accepted_this_run": accepted,
             "rejected_as_irrelevant": rejected,
             "rejected_as_stale": stale,
-            "total_database_items": len(seeds) + len(autos)
+            "total_database_items": len(grouped)
         },
-        "items": seeds + autos,
+        "items": grouped,
         "source_feeds": [
             {"name": name, "url": url}
-            for name, url in RSS_FEEDS
+            for name, url in FEEDS
         ]
     }
 
     OUT.write_text(
-        json.dumps(output, indent=2, ensure_ascii=False),
+        json.dumps(payload, indent=2, ensure_ascii=False),
         encoding="utf-8"
     )
 
     print(
-        f"V15.2 complete: {len(seeds) + len(autos)} items retained; "
-        f"{accepted} new items accepted; "
+        f"V15.3 complete: {len(grouped)} total items; "
+        f"{accepted} new discovery items accepted; "
         f"{rejected} rejected as irrelevant; "
         f"{stale} rejected as stale."
     )
