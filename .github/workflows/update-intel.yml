@@ -1,0 +1,38 @@
+name: Update Intelligence Feed
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 10 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-intelligence:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Update intelligence database
+        run: python scripts/update_intel.py
+
+      - name: Commit updated intelligence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/intel.json
+
+          if git diff --cached --quiet; then
+            echo "No intelligence changes to commit."
+          else
+            git commit -m "Update intelligence feed"
+            git push
+          fi
