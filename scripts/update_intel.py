@@ -5,17 +5,14 @@ import re
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "intel.json"
 
-# ------------------------------------------------------------
-# CORE SEED INTELLIGENCE
-# These are retained even if an automated source is unavailable.
-# ------------------------------------------------------------
-
+# Keep the manually curated intelligence anchors.
 SEED = [
     {
         "id": "seed-cuba-paradox",
@@ -37,7 +34,7 @@ SEED = [
         "source": "Granma",
         "title": "Pinar del Río campaign closes with 11,400+ hectares",
         "description": "The 2025–26 campaign finished below the original plan after rain, energy and drought problems.",
-        "url": "https://www.granma.cu/cuba/2026-03-16/con-mas-de-11-400-hectareas-cierran-siembras-de-campana-tabacalera-en-pinar-del-rio-15-03-2026-16-03-51",
+        "url": "https://www.granma.cu/cuba/2026-03-16/con-mas-de-11.400-hectareas-cierran-siembras-de-campana-tabacalera-en-pinar-del-rio-15-03-2026-16-03-51",
         "date": "2026-03-16",
         "automatic": False
     },
@@ -139,80 +136,38 @@ SEED = [
     }
 ]
 
-# ------------------------------------------------------------
-# SOURCES
-# ------------------------------------------------------------
-
 RSS_FEEDS = [
     ("Cigar Snob", "https://www.cigarsnobmag.com/feed/"),
     ("Developing Palates", "https://developingpalates.com/feed/")
 ]
 
-COUNTRY_TERMS = {
-    "Nicaragua": [
-        "nicaragua", "esteli", "estelí", "jalapa", "condega",
-        "con dega", "ometepe", "jalapa valley", "estelí valley"
-    ],
-    "Honduras": [
-        "honduras", "danli", "danlí", "jamastran", "jamastrán",
-        "talanga", "copan", "copán"
-    ],
-    "Dominican Republic": [
-        "dominican republic", "dominican tobacco", "villa gonzalez",
-        "villa gonzález", "santiago", "mao", "san juan"
-    ],
-    "Ecuador": [
-        "ecuador", "los rios", "los ríos", "quevedo",
-        "ecuadorian habano", "ecuadorian sumatra"
-    ],
-    "Mexico": [
-        "mexico", "méxico", "san andres tuxtla",
-        "san andrés tuxtla", "nayarit", "san andres", "san andrés"
-    ],
-    "Brazil": [
-        "brazil", "bahia", "bahía", "brazilian mata fina"
-    ],
-    "Cuba": [
-        "cuba", "pinar del rio", "pinar del río", "vuelta abajo",
-        "san luis", "san juan y martinez", "san juan y martínez",
-        "habanos"
-    ],
-    "United States": [
-        "connecticut", "pennsylvania", "kentucky", "tennessee",
-        "connecticut broadleaf", "connecticut shade"
-    ]
-}
-
-# Terms that establish that an article is relevant to the premium-cigar
-# supply chain rather than generic tobacco/smoking news.
-CIGAR_RELEVANCE = [
+# Terms that identify actual premium-cigar/tobacco supply-chain relevance.
+STRONG = [
     "premium cigar", "premium cigars", "handmade cigar", "handmade cigars",
-    "cigar tobacco", "cigar leaf", "cigar wrapper", "cigar binder",
-    "cigar filler", "wrapper leaf", "binder leaf", "filler leaf",
-    "cigar factory", "cigar manufacturer", "cigar production",
-    "cigar blend", "cigar release", "cigar line", "cigar brand",
-    "cigar company", "cigar industry", "tobacco farm", "tobacco field",
-    "tobacco harvest", "tobacco crop", "tobacco curing",
+    "cigar tobacco", "cigar leaf", "cigar wrapper", "wrapper leaf",
+    "binder leaf", "filler leaf", "cigar factory", "cigar manufacturer",
+    "cigar production", "cigar blend", "cigar release", "cigar line",
+    "cigar brand", "cigar company", "cigar industry", "tobacco farm",
+    "tobacco field", "tobacco harvest", "tobacco crop", "tobacco curing",
     "tobacco fermentation", "tobacco aging", "tobacco shortage",
-    "tobacco supply", "tobacco acreage", "tobacco disease",
-    "tobacco pest", "tobacco mildew", "tobacco mold",
-    "tobacco variety", "tobacco seed", "leaf tobacco"
+    "tobacco supply", "tobacco acreage", "tobacco disease", "tobacco pest",
+    "tobacco mildew", "tobacco mold", "tobacco variety", "tobacco seed",
+    "leaf tobacco", "broadleaf", "connecticut shade", "corojo",
+    "criollo", "havanensis", "san andrés", "san andres", "mata fina"
 ]
 
-# Generic tobacco/cigarette/public-health terms. These are excluded unless
-# the same story also contains strong premium-cigar relevance.
-EXCLUDE_GENERIC = [
+# Generic stories are excluded unless they have several strong cigar signals.
+GENERIC = [
     "cigarette consumption", "cigarette sales", "cigarette smoking",
     "smoking prevalence", "smoking cessation", "smoking rates",
     "e-cigarette", "e-cigarettes", "electronic cigarette", "vaping",
     "vape", "nicotine pouch", "nicotine pouches", "smokeless tobacco",
-    "cigarette tax", "cigarette taxes", "cigarette ban",
-    "smoking ban", "public health", "lung cancer", "cdc",
-    "heart disease", "tobacco control", "youth tobacco",
-    "youth smoking", "teen smoking", "cigarette excise"
+    "cigarette tax", "cigarette taxes", "cigarette ban", "smoking ban",
+    "public health", "lung cancer", "cdc", "heart disease",
+    "tobacco control", "youth tobacco", "youth smoking", "teen smoking"
 ]
 
-STAGE_TERMS = {
+STAGE = {
     "Field / crop": [
         "crop", "harvest", "tobacco leaf", "leaf", "farm", "farmer",
         "planting", "acre", "acreage", "drought", "rainfall", "rain",
@@ -220,107 +175,105 @@ STAGE_TERMS = {
         "mildew", "virus", "nematode", "irrigation", "soil", "seed"
     ],
     "Curing / fermentation": [
-        "curing", "curing barn", "fermentation", "ferment",
-        "barn", "humidity", "mold", "mildew", "post-harvest",
-        "aging tobacco", "storage"
+        "curing", "curing barn", "fermentation", "ferment", "barn",
+        "humidity", "mold", "mildew", "post-harvest", "aging tobacco",
+        "storage"
     ],
     "Supply": [
         "shortage", "supply", "inventory", "availability", "allocation",
         "leaf supply", "exports", "export", "shipping", "tariff",
-        "price increase", "cost", "raw material"
+        "price increase", "raw material"
     ],
     "Factory": [
-        "factory", "manufacturing", "production facility",
-        "plant", "capacity", "facility", "labor", "workforce",
-        "expansion", "closure", "shutdown"
+        "factory", "manufacturing", "production facility", "plant",
+        "capacity", "facility", "labor", "workforce", "expansion",
+        "closure", "shutdown"
     ],
     "Blending / release": [
-        "release", "ships", "ship", "launch", "blend", "vitola",
-        "limited edition", "new cigar", "new line", "sampler",
-        "production cigar"
+        "release", "ships", "ship", "blend", "vitola", "limited edition",
+        "new cigar", "new line", "production cigar"
     ],
     "Ownership / strategy": [
-        "acquire", "acquisition", "merger", "partnership",
-        "ownership", "investment", "expansion", "strategy",
-        "appoints", "ceo", "joint venture"
+        "acquire", "acquisition", "merger", "partnership", "ownership",
+        "investment", "expansion", "joint venture"
     ]
 }
 
-CRITICAL_TERMS = [
+CRITICAL = [
     "crop failure", "major crop loss", "factory fire", "factory closure",
-    "factory shutdown", "hurricane", "major hurricane", "drought emergency",
-    "major flood", "blue mold outbreak", "major disease outbreak",
-    "major pest outbreak", "leaf shortage", "tobacco shortage",
-    "supply disruption", "production halted", "production suspended",
-    "acquisition", "merger", "ownership change"
+    "factory shutdown", "production halted", "production suspended",
+    "leaf shortage", "tobacco shortage", "supply disruption",
+    "major disease outbreak", "major pest outbreak", "blue mold outbreak",
+    "major hurricane", "drought emergency", "major flood", "acquisition",
+    "merger", "ownership change"
 ]
 
-HIGH_TERMS = [
+HIGH = [
     "significant crop loss", "crop damage", "harvest damage",
-    "hurricane", "drought", "flood", "disease outbreak",
-    "pest outbreak", "mildew outbreak", "new factory",
-    "factory expansion", "production expansion", "production reduction",
-    "capacity expansion", "tobacco shortage", "supply disruption",
-    "leaf shortage", "new farm", "exclusive farm",
-    "acquisition", "ownership", "major partnership"
+    "hurricane", "drought", "flood", "disease outbreak", "pest outbreak",
+    "mildew outbreak", "new factory", "factory expansion",
+    "production expansion", "production reduction", "capacity expansion",
+    "tobacco shortage", "supply disruption", "leaf shortage", "new farm",
+    "exclusive farm", "acquisition", "ownership", "major partnership"
 ]
 
-MEDIUM_TERMS = [
-    "harvest", "crop", "farm", "factory", "production",
-    "irrigation", "curing", "fermentation", "mold", "mildew",
-    "new tobacco", "tobacco variety", "new cigar", "new blend",
-    "limited edition", "launch", "ships", "partnership",
-    "export", "inventory", "research"
+MEDIUM = [
+    "harvest", "crop", "farm", "factory", "production", "irrigation",
+    "curing", "fermentation", "mold", "mildew", "tobacco variety",
+    "new cigar", "new blend", "limited edition", "launch", "ships",
+    "partnership", "export", "inventory", "research"
 ]
 
 
 def fetch(url):
-    request = urllib.request.Request(
+    req = urllib.request.Request(
         url,
-        headers={
-            "User-Agent": "Cigar-Tobacco-Industry-Intel/15.1"
-        }
+        headers={"User-Agent": "Cigar-Tobacco-Industry-Intel/15.2"}
     )
-    with urllib.request.urlopen(request, timeout=30) as response:
+    with urllib.request.urlopen(req, timeout=30) as response:
         return response.read()
 
 
-def clean(text):
-    return re.sub(
-        r"\s+",
-        " ",
-        re.sub(r"<[^>]+>", " ", text or "")
-    ).strip()
+def clean(value):
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", value or "")).strip()
+
+
+def parse_date(value):
+    if not value:
+        return None
+    try:
+        dt = parsedate_to_datetime(value)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc)
+    except Exception:
+        return None
 
 
 def parse_feed(source, url):
-    results = []
-
+    out = []
     try:
         root = ET.fromstring(fetch(url))
-
-        for item in root.findall(".//item")[:50]:
+        for item in root.findall(".//item")[:60]:
             title = clean(item.findtext("title"))
             link = clean(item.findtext("link"))
             description = clean(item.findtext("description"))
-            pub_date = clean(item.findtext("pubDate"))
-
+            pub = clean(item.findtext("pubDate"))
             if title and link:
-                results.append({
+                out.append({
                     "source": source,
                     "title": title,
-                    "description": description[:1000],
+                    "description": description[:1500],
                     "url": link,
-                    "date": pub_date
+                    "date_raw": pub,
+                    "date_dt": parse_date(pub)
                 })
-
     except Exception as error:
         print(f"RSS failed for {source}: {error}")
+    return out
 
-    return results
 
-
-def parse_google_news(query):
+def google_news(query):
     url = (
         "https://news.google.com/rss/search?q="
         + urllib.parse.quote(query)
@@ -329,261 +282,264 @@ def parse_google_news(query):
     return parse_feed("Google News Discovery", url)
 
 
-def contains_any(text, terms):
-    return any(term in text for term in terms)
-
-
-def classify(title, description, source=""):
-    text = (title + " " + description).lower()
-
-    # Country
-    country = "Global"
-    for name, terms in COUNTRY_TERMS.items():
-        if contains_any(text, terms):
-            country = name
-            break
-
-    # Stage
-    stage = "Industry"
-    stage_hits = []
-
-    for name, terms in STAGE_TERMS.items():
-        hits = [term for term in terms if term in text]
-        if hits:
-            stage_hits.append((len(hits), name))
-
-    if stage_hits:
-        stage = sorted(stage_hits, reverse=True)[0][1]
-
-    # Priority
-    if contains_any(text, CRITICAL_TERMS):
-        priority = "critical"
-    elif contains_any(text, HIGH_TERMS):
-        priority = "high"
-    elif contains_any(text, MEDIUM_TERMS):
-        priority = "medium"
-    else:
-        priority = "low"
-
-    # Stronger primary-source bias.
-    source_lower = source.lower()
-    if any(x in source_lower for x in [
-        "drew estate", "plasencia", "intabaco", "presidencia",
-        "premium cigar association", "jre tobacco", "my father",
-        "aganorsa", "a.j. fernandez", "oliva", "arturo fuente",
-        "la flor dominicana", "habanos"
-    ]):
-        if priority == "low":
-            priority = "medium"
-
-    return country, stage, priority
+def count_hits(text, terms):
+    return sum(1 for term in terms if term in text)
 
 
 def is_relevant(title, description):
     text = (title + " " + description).lower()
+    strong_hits = count_hits(text, STRONG)
+    generic_hits = count_hits(text, GENERIC)
 
-    cigar_hits = sum(term in text for term in CIGAR_RELEVANCE)
-    generic_hits = sum(term in text for term in EXCLUDE_GENERIC)
-
-    # Hard exclusion for generic cigarette/public-health stories unless
-    # they contain multiple strong cigar-industry signals.
-    if generic_hits >= 1 and cigar_hits < 2:
+    # Hard gate: a generic cigarette/public-health story must have
+    # multiple strong premium-cigar signals.
+    if generic_hits and strong_hits < 3:
         return False
 
-    # Require at least one meaningful premium-cigar/upstream signal.
-    if cigar_hits == 0:
+    # No premium-cigar/tobacco supply-chain signal = reject.
+    if strong_hits < 1:
         return False
 
     return True
 
 
-def normalize_date(value):
-    if not value:
-        return ""
+def classify(title, description, source):
+    text = (title + " " + description).lower()
+    stage_hits = []
 
-    # Keep the original value if parsing is unnecessary; dashboard can display it.
-    return value[:80]
+    for name, terms in STAGE.items():
+        hits = count_hits(text, terms)
+        if hits:
+            stage_hits.append((hits, name))
+
+    stage = max(stage_hits)[1] if stage_hits else "Industry"
+
+    critical_hits = count_hits(text, CRITICAL)
+    high_hits = count_hits(text, HIGH)
+    medium_hits = count_hits(text, MEDIUM)
+
+    # Critical requires either an explicit severe event plus a strong
+    # cigar/tobacco signal, or two independent severe signals.
+    strong_hits = count_hits(text, STRONG)
+
+    if critical_hits >= 2 or (critical_hits >= 1 and strong_hits >= 2):
+        priority = "critical"
+    elif high_hits >= 2 or (high_hits >= 1 and strong_hits >= 2):
+        priority = "high"
+    elif medium_hits >= 1:
+        priority = "medium"
+    else:
+        priority = "low"
+
+    # Automatic discovery is deliberately capped at HIGH unless a story
+    # contains unmistakable multi-signal disruption language.
+    if priority == "critical" and critical_hits < 2:
+        priority = "high"
+
+    # Never allow Google News discovery to make something critical from
+    # a single keyword.
+    if source == "Google News Discovery" and priority == "critical":
+        priority = "high"
+
+    country = "Global"
+    country_terms = {
+        "Nicaragua": ["nicaragua", "esteli", "estelí", "jalapa", "condega", "con dega"],
+        "Honduras": ["honduras", "danli", "danlí", "jamastran", "jamastrán", "talanga"],
+        "Dominican Republic": ["dominican republic", "villa gonzalez", "villa gonzález", "mao", "san juan"],
+        "Ecuador": ["ecuador", "los rios", "los ríos", "quevedo"],
+        "Mexico": ["mexico", "méxico", "san andres tuxtla", "san andrés tuxtla"],
+        "Brazil": ["brazil", "bahia", "bahía", "mata fina"],
+        "Cuba": ["cuba", "pinar del rio", "pinar del río", "vuelta abajo", "habanos"],
+        "United States": ["connecticut", "pennsylvania", "kentucky", "tennessee", "connecticut broadleaf"]
+    }
+
+    for name, terms in country_terms.items():
+        if any(term in text for term in terms):
+            country = name
+            break
+
+    return country, stage, priority
 
 
 def make_id(title, url):
-    basis = (title + "|" + url).lower()
-    return "auto-" + re.sub(r"[^a-z0-9]+", "-", basis).strip("-")[:110]
-
-
-def make_item(article):
-    title = article["title"]
-    description = article["description"]
-    source = article["source"]
-    url = article["url"]
-
-    country, stage, priority = classify(
-        title,
-        description,
-        source
-    )
-
-    return {
-        "id": make_id(title, url),
-        "priority": priority,
-        "country": country,
-        "stage": stage,
-        "source": source,
-        "title": title,
-        "description": description[:600],
-        "url": url,
-        "date": normalize_date(article.get("date", "")),
-        "automatic": True,
-        "verification": "DISCOVERY — verify important signals against a primary source."
-    }
+    return "auto-" + re.sub(r"[^a-z0-9]+", "-", (title + "|" + url).lower()).strip("-")[:110]
 
 
 def main():
-    print("Starting V15.1 premium-cigar intelligence update...")
+    print("Starting V15.2 intelligence update...")
 
-    # Load existing database so the system does not lose useful historical items.
     existing = []
     if OUT.exists():
         try:
-            payload = json.loads(
+            existing = json.loads(
                 OUT.read_text(encoding="utf-8")
-            )
-            existing = payload.get("items", [])
+            ).get("items", [])
         except Exception as error:
-            print("Existing database could not be read:", error)
+            print("Could not read existing database:", error)
 
-    # Keep seeds exactly as defined above.
-    final = {item["id"]: item for item in SEED}
+    # Keep curated anchors and only relevant recent automatic items.
+    final = {x["id"]: x for x in SEED}
+    cutoff = datetime.now(timezone.utc) - timedelta(days=45)
 
-    # Preserve only relevant existing automatic items.
     for item in existing:
         if not item.get("automatic"):
             final[item.get("id")] = item
             continue
 
-        title = item.get("title", "")
-        description = item.get("description", "")
+        if not is_relevant(item.get("title", ""), item.get("description", "")):
+            continue
 
-        if is_relevant(title, description):
-            final[item.get("id") or make_id(title, item.get("url", ""))] = item
+        # Old automatic discovery items are removed. This prevents a 2023
+        # article surfaced by Google News from becoming today's signal.
+        raw = item.get("date", "")
+        dt = parse_date(raw)
+        if dt and dt < cutoff:
+            continue
+
+        final[item.get("id") or make_id(item.get("title", ""), item.get("url", ""))] = item
+
+    queries = [
+        '"premium cigar" tobacco farm harvest',
+        '"cigar tobacco" crop disease pest',
+        '"cigar tobacco" hurricane drought flood',
+        '"premium cigar" tobacco shortage supply',
+        '"cigar factory" production expansion',
+        '"cigar factory" closure shutdown',
+        '"premium cigar" acquisition partnership',
+        '"premium cigar" new factory new farm',
+        '"Nicaragua" cigar tobacco harvest farm',
+        '"Honduras" cigar tobacco harvest farm',
+        '"Dominican Republic" cigar tobacco harvest farm',
+        '"Ecuador" cigar tobacco wrapper harvest',
+        '"Mexico" cigar tobacco San Andres harvest',
+        '"Brazil" cigar tobacco Bahia leaf',
+        '"Cuba" Pinar del Rio tobacco harvest Habanos',
+        '"Connecticut Broadleaf" cigar tobacco crop'
+    ]
 
     discovered = []
+    for q in queries:
+        print("Checking:", q)
+        discovered.extend(google_news(q))
 
-    # Direct industry feeds.
     for source, feed_url in RSS_FEEDS:
         print("Checking:", source)
         discovered.extend(parse_feed(source, feed_url))
 
-    # Targeted upstream and production discovery.
-    queries = [
-        '"Nicaragua" tobacco cigar farm harvest disease factory',
-        '"Honduras" tobacco cigar farm harvest disease factory',
-        '"Dominican Republic" tobacco cigar farm harvest irrigation factory',
-        '"Ecuador" tobacco wrapper cigar farm harvest',
-        '"Mexico" tobacco cigar farm harvest San Andres',
-        '"Brazil" tobacco cigar leaf Bahia',
-        '"Cuba" Pinar del Rio tobacco harvest cigar supply factory',
-        '"Connecticut" Broadleaf Shade tobacco cigar crop',
-        '"premium cigar" tobacco leaf shortage supply',
-        '"premium cigar" factory expansion production',
-        '"cigar tobacco" disease pest crop',
-        '"cigar tobacco" hurricane drought flood',
-        '"cigar factory" acquisition partnership expansion',
-        '"cigar release" new blend production'
-    ]
-
-    for query in queries:
-        print("Checking:", query)
-        discovered.extend(parse_google_news(query))
-
     accepted = 0
     rejected = 0
+    stale = 0
 
     for article in discovered:
-        if not is_relevant(
-            article["title"],
-            article["description"]
-        ):
+        title = article["title"]
+        description = article["description"]
+
+        if not is_relevant(title, description):
             rejected += 1
             continue
 
-        item = make_item(article)
+        # For automatic discovery, require a real recent publication date.
+        dt = article.get("date_dt")
+        if dt is None or dt < cutoff:
+            stale += 1
+            continue
+
+        country, stage, priority = classify(
+            title, description, article["source"]
+        )
+
+        item = {
+            "id": make_id(title, article["url"]),
+            "priority": priority,
+            "country": country,
+            "stage": stage,
+            "source": article["source"],
+            "title": title,
+            "description": description[:600],
+            "url": article["url"],
+            "date": dt.isoformat(),
+            "automatic": True,
+            "verification": "DISCOVERY — verify important signals against a primary source."
+        }
+
         final[item["id"]] = item
         accepted += 1
 
-    # Convert to list and remove duplicates by URL.
+    # Deduplicate URLs.
     by_url = {}
     for item in final.values():
-        url = item.get("url", "")
-        if url:
-            by_url[url] = item
+        if item.get("url"):
+            by_url[item["url"]] = item
 
     items = list(by_url.values())
 
-    # Priority and recency sorting.
-    priority_rank = {
-        "critical": 0,
-        "high": 1,
-        "medium": 2,
-        "low": 3
-    }
+    rank = {"critical": 0, "high": 1, "medium": 2, "low": 3}
 
-    items.sort(
+    # Curated seeds remain first and can be older. Automatic discoveries are
+    # recent-only and sorted newest first within priority.
+    seed_ids = {x["id"] for x in SEED}
+    seeds = [x for x in items if x.get("id") in seed_ids]
+    autos = [x for x in items if x.get("id") not in seed_ids]
+
+    autos.sort(
         key=lambda x: (
-            priority_rank.get(x.get("priority", "low"), 9),
-            str(x.get("date", ""))
-        )
+            rank.get(x.get("priority", "low"), 9),
+            x.get("date", "")
+        ),
+        reverse=False
     )
 
-    # Preserve all seeds, then keep the newest 300 relevant automatic items.
-    seed_ids = {item["id"] for item in SEED}
-    seed_items = [x for x in items if x.get("id") in seed_ids]
-    automatic_items = [x for x in items if x.get("id") not in seed_ids]
-
-    automatic_items.sort(
-        key=lambda x: str(x.get("date", "")),
-        reverse=True
+    # Re-sort with priority ascending, date descending.
+    autos.sort(
+        key=lambda x: (
+            rank.get(x.get("priority", "low"), 9),
+            x.get("date", "")
+        ),
+        reverse=False
     )
 
-    automatic_items = automatic_items[:300]
+    # For each priority, newest first.
+    grouped = []
+    for p in ["critical", "high", "medium", "low"]:
+        group = [x for x in autos if x.get("priority") == p]
+        group.sort(key=lambda x: x.get("date", ""), reverse=True)
+        grouped.extend(group)
 
-    final_items = seed_items + automatic_items
+    autos = grouped[:300]
 
     output = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "mode": "github-actions-v15.1",
+        "mode": "github-actions-v15.2",
         "filter": {
             "focus": "premium cigar tobacco supply chain",
-            "excluded": "generic cigarette, smoking-prevalence, vaping, nicotine and public-health stories unless directly tied to premium cigars",
-            "verification": "Automated items are discovery leads, not confirmed intelligence."
+            "automatic_window_days": 45,
+            "generic_exclusions": "cigarette consumption, smoking prevalence, vaping, nicotine and public-health stories unless strongly tied to premium cigars",
+            "automatic_critical_cap": "Google News discovery cannot create CRITICAL priority; critical status is reserved for curated intelligence.",
+            "verification": "Automatic items are discovery leads, not confirmed intelligence."
         },
         "stats": {
             "accepted_this_run": accepted,
             "rejected_as_irrelevant": rejected,
-            "total_database_items": len(final_items)
+            "rejected_as_stale": stale,
+            "total_database_items": len(seeds) + len(autos)
         },
-        "items": final_items,
+        "items": seeds + autos,
         "source_feeds": [
-            {
-                "name": name,
-                "url": url
-            }
+            {"name": name, "url": url}
             for name, url in RSS_FEEDS
         ]
     }
 
     OUT.write_text(
-        json.dumps(
-            output,
-            ensure_ascii=False,
-            indent=2
-        ),
+        json.dumps(output, indent=2, ensure_ascii=False),
         encoding="utf-8"
     )
 
     print(
-        f"V15.1 complete: {len(final_items)} relevant items retained; "
-        f"{accepted} new discovery items accepted; "
-        f"{rejected} discovery items rejected."
+        f"V15.2 complete: {len(seeds) + len(autos)} items retained; "
+        f"{accepted} new items accepted; "
+        f"{rejected} rejected as irrelevant; "
+        f"{stale} rejected as stale."
     )
 
 
