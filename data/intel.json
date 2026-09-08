@@ -1,17 +1,19 @@
 {
-  "generated_at": "2026-09-08T21:53:38.315747+00:00",
-  "mode": "github-actions-v15.2",
+  "updated": "2026-09-08T21:57:21.581078+00:00",
+  "generated_at": "2026-09-08T21:57:21.581082+00:00",
+  "mode": "github-actions-v15.3",
   "filter": {
     "focus": "premium cigar tobacco supply chain",
     "automatic_window_days": 45,
+    "automatic_database_rebuilt": true,
     "generic_exclusions": "cigarette consumption, smoking prevalence, vaping, nicotine and public-health stories unless strongly tied to premium cigars",
-    "automatic_critical_cap": "Google News discovery cannot create CRITICAL priority; critical status is reserved for curated intelligence.",
+    "automatic_critical": false,
     "verification": "Automatic items are discovery leads, not confirmed intelligence."
   },
   "stats": {
     "accepted_this_run": 2,
-    "rejected_as_irrelevant": 357,
-    "rejected_as_stale": 79,
+    "rejected_as_irrelevant": 358,
+    "rejected_as_stale": 78,
     "total_database_items": 12
   },
   "items": [
@@ -40,15 +42,15 @@
       "automatic": false
     },
     {
-      "id": "seed-dr-drew",
+      "id": "seed-ni-plasencia",
       "priority": "high",
-      "country": "Dominican Republic",
-      "stage": "Factory",
-      "source": "Drew Estate",
-      "title": "Drew Estate announces Drew Dominicana",
-      "description": "A planned 73,000 sq. ft. compound and exclusive farm in Villa González would be Drew Estate's first production outside Nicaragua.",
-      "url": "https://drewestate.com/411-news/announcing-drew-dominicana-new-drew-estate-farm-and-factory/",
-      "date": "2026-04-17",
+      "country": "Nicaragua",
+      "stage": "Blending / release",
+      "source": "Cigar Journal",
+      "title": "Plasencia — Born of This Land",
+      "description": "A major brand-evolution announcement. Watch for subsequent blend, tobacco, production and distribution implications.",
+      "url": "https://www.cigarjournal.com/plasencia-cigars-unveils-the-next-chapter-of-its-brand-evolution/",
+      "date": "2026-09-07",
       "automatic": false
     },
     {
@@ -64,6 +66,18 @@
       "automatic": false
     },
     {
+      "id": "seed-dr-drew",
+      "priority": "high",
+      "country": "Dominican Republic",
+      "stage": "Factory",
+      "source": "Drew Estate",
+      "title": "Drew Estate announces Drew Dominicana",
+      "description": "A planned 73,000 sq. ft. compound and exclusive farm in Villa González would be Drew Estate's first production outside Nicaragua.",
+      "url": "https://drewestate.com/411-news/announcing-drew-dominicana-new-drew-estate-farm-and-factory/",
+      "date": "2026-04-17",
+      "automatic": false
+    },
+    {
       "id": "seed-dr-acreage",
       "priority": "high",
       "country": "Dominican Republic",
@@ -76,18 +90,6 @@
       "automatic": false
     },
     {
-      "id": "seed-ni-plasencia",
-      "priority": "high",
-      "country": "Nicaragua",
-      "stage": "Blending / release",
-      "source": "Cigar Journal",
-      "title": "Plasencia — Born of This Land",
-      "description": "A major brand-evolution announcement. Watch for subsequent blend, tobacco, production and distribution implications.",
-      "url": "https://www.cigarjournal.com/plasencia-cigars-unveils-the-next-chapter-of-its-brand-evolution/",
-      "date": "2026-09-07",
-      "automatic": false
-    },
-    {
       "id": "seed-climate",
       "priority": "medium",
       "country": "Global",
@@ -97,6 +99,18 @@
       "description": "A strong El Niño could alter rainfall and temperature patterns across tropical agricultural regions. Climate watch only; not proof of tobacco damage.",
       "url": "https://www.reuters.com/business/environment/strong-el-nino-developing-weather-agencies-say-2026-08-18/",
       "date": "2026-08-18",
+      "automatic": false
+    },
+    {
+      "id": "seed-mildew",
+      "priority": "medium",
+      "country": "Global",
+      "stage": "Curing / fermentation",
+      "source": "Industrial Crops and Products",
+      "title": "Post-harvest mildew risk research",
+      "description": "Research proposes a Mold Risk Index for post-harvest cigar-tobacco conditions, reinforcing the importance of humidity and storage controls.",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0926669026012604",
+      "date": "2026-08",
       "automatic": false
     },
     {
@@ -121,18 +135,6 @@
       "description": "Agricultural-veda operations in Montecristi are part of the crop-protection picture.",
       "url": "https://intabaco.gob.do/noticias/intabaco-participa-en-operativos-de-veda-agricola-2026/",
       "date": "2026",
-      "automatic": false
-    },
-    {
-      "id": "seed-mildew",
-      "priority": "medium",
-      "country": "Global",
-      "stage": "Curing / fermentation",
-      "source": "Industrial Crops and Products",
-      "title": "Post-harvest mildew risk research",
-      "description": "Research proposes a Mold Risk Index for post-harvest cigar-tobacco conditions, reinforcing the importance of humidity and storage controls.",
-      "url": "https://www.sciencedirect.com/science/article/pii/S0926669026012604",
-      "date": "2026-08",
       "automatic": false
     },
     {
