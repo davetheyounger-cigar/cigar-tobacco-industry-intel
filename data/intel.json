@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-10T10:30:10.347064+00:00",
-  "generated_at": "2026-09-10T10:30:10.347071+00:00",
+  "updated": "2026-09-11T10:29:33.415669+00:00",
+  "generated_at": "2026-09-11T10:29:33.415676+00:00",
   "mode": "github-actions-v15.3",
   "filter": {
     "focus": "premium cigar tobacco supply chain",
@@ -12,8 +12,8 @@
   },
   "stats": {
     "accepted_this_run": 1,
-    "rejected_as_irrelevant": 343,
-    "rejected_as_stale": 85,
+    "rejected_as_irrelevant": 348,
+    "rejected_as_stale": 81,
     "total_database_items": 11
   },
   "items": [
