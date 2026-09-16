@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-15T10:30:09.872043+00:00",
-  "generated_at": "2026-09-15T10:30:09.872046+00:00",
+  "updated": "2026-09-16T10:30:09.947903+00:00",
+  "generated_at": "2026-09-16T10:30:09.947909+00:00",
   "mode": "github-actions-v15.3",
   "filter": {
     "focus": "premium cigar tobacco supply chain",
@@ -11,10 +11,10 @@
     "verification": "Automatic items are discovery leads, not confirmed intelligence."
   },
   "stats": {
-    "accepted_this_run": 3,
-    "rejected_as_irrelevant": 333,
-    "rejected_as_stale": 89,
-    "total_database_items": 13
+    "accepted_this_run": 1,
+    "rejected_as_irrelevant": 329,
+    "rejected_as_stale": 85,
+    "total_database_items": 11
   },
   "items": [
     {
@@ -102,13 +102,13 @@
       "automatic": false
     },
     {
-      "id": "auto-smoker-friendly-forms-strategic-partnership-with-premium-cigar-company-convenience-store-news-https-news-googl",
+      "id": "auto-smoker-friendly-forms-strategic-partnership-with-premium-cigar-company-csnews-com-https-news-google-com-rss-ar",
       "priority": "medium",
       "country": "Global",
       "stage": "Ownership / strategy",
       "source": "Google News Discovery",
-      "title": "Smoker Friendly Forms Strategic Partnership With Premium Cigar Company - Convenience Store News",
-      "description": "Smoker Friendly Forms Strategic Partnership With Premium Cigar Company &nbsp;&nbsp; Convenience Store News",
+      "title": "Smoker Friendly Forms Strategic Partnership With Premium Cigar Company - csnews.com",
+      "description": "Smoker Friendly Forms Strategic Partnership With Premium Cigar Company &nbsp;&nbsp; csnews.com",
       "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOVWNmbnFxdFNDNVBNT25BdFFZaXRiRWJtbm5MM1I0NUpXXzVqa3hSQWI5WG5mQVh0YVRzc1VKNV9EZ3l0anI3aERVLWFOSE1SVGQ5bGJYUFZkSnc0Qm9HVnNvTUhieUxEVF9ESjBuRTh5YjdUMXRXQWRSOU50Z2s2Ykl0T0lfX1cyT2lwSQ?oc=5",
       "date": "2026-08-03T07:00:00+00:00",
       "automatic": true,
@@ -149,32 +149,6 @@
       "url": "https://intabaco.gob.do/noticias/intabaco-participa-en-operativos-de-veda-agricola-2026/",
       "date": "2026",
       "automatic": false
-    },
-    {
-      "id": "auto-cigar-news-cigar-release-list-august-2026-https-developingpalates-com-news-cigar-news-cigar-news-cigar-release",
-      "priority": "low",
-      "country": "Global",
-      "stage": "Blending / release",
-      "source": "Developing Palates",
-      "title": "Cigar News: Cigar Release List – August 2026",
-      "description": "Monthly, we will put together a list of all of the cigars that were released, or announced to be released, in the previous month. This should give you an easy way to stay in tune with new releases. The post Cigar News: Cigar Release List &#8211; August 2026 appeared first on Developing Palates - Cigar, Beer and Spirit Reviews and Ratings .",
-      "url": "https://developingpalates.com/news/cigar-news/cigar-news-cigar-release-list-august-2026/",
-      "date": "2026-09-01T13:00:39+00:00",
-      "automatic": true,
-      "verification": "DISCOVERY — verify important signals against a primary source."
-    },
-    {
-      "id": "auto-personal-cigar-review-rocky-patel-the-edge-corojo-toro-https-developingpalates-com-reviews-cigar-reviews-perso",
-      "priority": "low",
-      "country": "Global",
-      "stage": "Industry",
-      "source": "Developing Palates",
-      "title": "Personal Cigar Review: Rocky Patel The Edge Corojo Toro",
-      "description": "The Rocky Patel The Edge Corojo Toro started pretty average, focused around the toasted cedar and earth. It increased in enjoyment in the second third as the black pepper returned, rounding out the profile a bit more. It took a step back in the final third as the wood bitterness increased and the pepper mellowed. This is a serviceable lower priced offering. While I wouldn't see myself really coming back to it with any frequency, for those that like a cedar and earth flavor combination and prefer lower cost offerings, this might fit the bill. The post Personal Cigar Review: Rocky Patel The Edge",
-      "url": "https://developingpalates.com/reviews/cigar-reviews/personal-cigar-review-rocky-patel-the-edge-corojo-toro/",
-      "date": "2026-08-28T13:00:02+00:00",
-      "automatic": true,
-      "verification": "DISCOVERY — verify important signals against a primary source."
     }
   ],
   "source_feeds": [
