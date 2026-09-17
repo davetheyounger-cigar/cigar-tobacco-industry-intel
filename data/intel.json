@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-16T10:30:09.947903+00:00",
-  "generated_at": "2026-09-16T10:30:09.947909+00:00",
+  "updated": "2026-09-17T10:29:02.266529+00:00",
+  "generated_at": "2026-09-17T10:29:02.266542+00:00",
   "mode": "github-actions-v15.3",
   "filter": {
     "focus": "premium cigar tobacco supply chain",
@@ -11,10 +11,10 @@
     "verification": "Automatic items are discovery leads, not confirmed intelligence."
   },
   "stats": {
-    "accepted_this_run": 1,
-    "rejected_as_irrelevant": 329,
-    "rejected_as_stale": 85,
-    "total_database_items": 11
+    "accepted_this_run": 0,
+    "rejected_as_irrelevant": 338,
+    "rejected_as_stale": 72,
+    "total_database_items": 10
   },
   "items": [
     {
@@ -100,19 +100,6 @@
       "url": "https://www.reuters.com/business/environment/strong-el-nino-developing-weather-agencies-say-2026-08-18/",
       "date": "2026-08-18",
       "automatic": false
-    },
-    {
-      "id": "auto-smoker-friendly-forms-strategic-partnership-with-premium-cigar-company-csnews-com-https-news-google-com-rss-ar",
-      "priority": "medium",
-      "country": "Global",
-      "stage": "Ownership / strategy",
-      "source": "Google News Discovery",
-      "title": "Smoker Friendly Forms Strategic Partnership With Premium Cigar Company - csnews.com",
-      "description": "Smoker Friendly Forms Strategic Partnership With Premium Cigar Company &nbsp;&nbsp; csnews.com",
-      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOVWNmbnFxdFNDNVBNT25BdFFZaXRiRWJtbm5MM1I0NUpXXzVqa3hSQWI5WG5mQVh0YVRzc1VKNV9EZ3l0anI3aERVLWFOSE1SVGQ5bGJYUFZkSnc0Qm9HVnNvTUhieUxEVF9ESjBuRTh5YjdUMXRXQWRSOU50Z2s2Ykl0T0lfX1cyT2lwSQ?oc=5",
-      "date": "2026-08-03T07:00:00+00:00",
-      "automatic": true,
-      "verification": "DISCOVERY — verify important signals against a primary source."
     },
     {
       "id": "seed-mildew",
