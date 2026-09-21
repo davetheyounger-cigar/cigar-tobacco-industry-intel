@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-20T10:26:58.193699+00:00",
-  "generated_at": "2026-09-20T10:26:58.193717+00:00",
+  "updated": "2026-09-21T10:28:33.968705+00:00",
+  "generated_at": "2026-09-21T10:28:33.968710+00:00",
   "mode": "github-actions-v15.3",
   "filter": {
     "focus": "premium cigar tobacco supply chain",
@@ -11,10 +11,10 @@
     "verification": "Automatic items are discovery leads, not confirmed intelligence."
   },
   "stats": {
-    "accepted_this_run": 0,
-    "rejected_as_irrelevant": 345,
-    "rejected_as_stale": 91,
-    "total_database_items": 10
+    "accepted_this_run": 1,
+    "rejected_as_irrelevant": 353,
+    "rejected_as_stale": 93,
+    "total_database_items": 11
   },
   "items": [
     {
@@ -136,6 +136,19 @@
       "url": "https://intabaco.gob.do/noticias/intabaco-participa-en-operativos-de-veda-agricola-2026/",
       "date": "2026",
       "automatic": false
+    },
+    {
+      "id": "auto-cigar-news-cigar-release-list-august-2026-https-developingpalates-com-news-cigar-news-cigar-news-cigar-release",
+      "priority": "low",
+      "country": "Global",
+      "stage": "Blending / release",
+      "source": "Developing Palates",
+      "title": "Cigar News: Cigar Release List – August 2026",
+      "description": "Monthly, we will put together a list of all of the cigars that were released, or announced to be released, in the previous month. This should give you an easy way to stay in tune with new releases. The post Cigar News: Cigar Release List &#8211; August 2026 appeared first on Developing Palates - Cigar, Beer and Spirit Reviews and Ratings .",
+      "url": "https://developingpalates.com/news/cigar-news/cigar-news-cigar-release-list-august-2026/",
+      "date": "2026-09-01T13:00:39+00:00",
+      "automatic": true,
+      "verification": "DISCOVERY — verify important signals against a primary source."
     }
   ],
   "source_feeds": [
