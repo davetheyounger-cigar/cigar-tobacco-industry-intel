@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-08T10:35:05.208895+00:00",
-  "generated_at": "2026-10-08T10:35:05.208908+00:00",
+  "updated": "2026-10-09T10:35:24.185554+00:00",
+  "generated_at": "2026-10-09T10:35:24.185560+00:00",
   "mode": "github-actions-v15.3",
   "filter": {
     "focus": "premium cigar tobacco supply chain",
@@ -11,10 +11,10 @@
     "verification": "Automatic items are discovery leads, not confirmed intelligence."
   },
   "stats": {
-    "accepted_this_run": 0,
-    "rejected_as_irrelevant": 360,
+    "accepted_this_run": 2,
+    "rejected_as_irrelevant": 365,
     "rejected_as_stale": 91,
-    "total_database_items": 10
+    "total_database_items": 12
   },
   "items": [
     {
@@ -136,6 +136,32 @@
       "url": "https://intabaco.gob.do/noticias/intabaco-participa-en-operativos-de-veda-agricola-2026/",
       "date": "2026",
       "automatic": false
+    },
+    {
+      "id": "auto-personal-cigar-review-montecristo-classic-no-2-https-developingpalates-com-reviews-cigar-reviews-personal-ciga",
+      "priority": "low",
+      "country": "Cuba",
+      "stage": "Industry",
+      "source": "Developing Palates",
+      "title": "Personal Cigar Review: Montecristo Classic No. 2",
+      "description": "The Montecristo Classic No. 2 had a nice flavor profile through the first two thirds, focused around toasted cedar and earth, but the supporting notes all did a good job of balancing the profile. It took a step down in the final third as the balance went off a bit due to the earth, leather and strength. This is a nice Connecticut shade offering that offers a lower strength profile. It's fairly expensive, but if you are OK with this price range and enjoy this profile, it's well worth a try and isn't just a cigar playing off the Cuban name. The post Personal Cigar Review: Montecristo Classic No.",
+      "url": "https://developingpalates.com/reviews/cigar-reviews/personal-cigar-review-montecristo-classic-no-2/",
+      "date": "2026-10-02T13:00:55+00:00",
+      "automatic": true,
+      "verification": "DISCOVERY — verify important signals against a primary source."
+    },
+    {
+      "id": "auto-cigar-news-cigar-release-list-september-2026-https-developingpalates-com-news-cigar-news-cigar-news-cigar-rele",
+      "priority": "low",
+      "country": "Global",
+      "stage": "Blending / release",
+      "source": "Developing Palates",
+      "title": "Cigar News: Cigar Release List – September 2026",
+      "description": "Monthly, we will put together a list of all of the cigars that were released, or announced to be released, in the previous month. This should give you an easy way to stay in tune with new releases. The post Cigar News: Cigar Release List &#8211; September 2026 appeared first on Developing Palates - Cigar, Beer and Spirit Reviews and Ratings .",
+      "url": "https://developingpalates.com/news/cigar-news/cigar-news-cigar-release-list-september-2026/",
+      "date": "2026-10-01T13:00:31+00:00",
+      "automatic": true,
+      "verification": "DISCOVERY — verify important signals against a primary source."
     }
   ],
   "source_feeds": [
