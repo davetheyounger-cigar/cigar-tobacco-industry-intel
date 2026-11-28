@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-27T19:29:21.188788+00:00",
-  "generated_at": "2026-11-27T19:29:21.188794+00:00",
+  "updated": "2026-11-28T18:15:11.177783+00:00",
+  "generated_at": "2026-11-28T18:15:11.177798+00:00",
   "mode": "github-actions-v15.3",
   "filter": {
     "focus": "premium cigar tobacco supply chain",
@@ -11,10 +11,10 @@
     "verification": "Automatic items are discovery leads, not confirmed intelligence."
   },
   "stats": {
-    "accepted_this_run": 4,
-    "rejected_as_irrelevant": 266,
-    "rejected_as_stale": 79,
-    "total_database_items": 14
+    "accepted_this_run": 0,
+    "rejected_as_irrelevant": 214,
+    "rejected_as_stale": 54,
+    "total_database_items": 10
   },
   "items": [
     {
@@ -90,19 +90,6 @@
       "automatic": false
     },
     {
-      "id": "auto-plasencia-cigars-and-corona-cigar-company-expand-product-partnership-with-alma-fuerte-cigar-journal-https-news",
-      "priority": "medium",
-      "country": "Global",
-      "stage": "Ownership / strategy",
-      "source": "Google News Discovery",
-      "title": "Plasencia Cigars and Corona Cigar Company Expand Product Partnership with Alma Fuerte - Cigar Journal",
-      "description": "Plasencia Cigars and Corona Cigar Company Expand Product Partnership with Alma Fuerte &nbsp;&nbsp; Cigar Journal",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPaWtUY0taNFI2OE96azlJRG5mYjIyUGtCSS1BSC1jQ2psYkRrdUstQnlBb19KVEkwX1JxVG5NLXUzY1pScWd1SXp6eXRLMGxQdE4tMmdBXzVxWV9WeHpGRWFSZEFkQ2w2amZVTkFkOVNhSi1VMzB1ZEZ1NnBLb2hNMmc5aHNvbmFSX1c4bGpneGlpVlNCUENsMWVfQjdndmFjU0JvV2d4TnV3VGpsR2ZNejRBdUtSdw?oc=5",
-      "date": "2026-10-20T07:00:00+00:00",
-      "automatic": true,
-      "verification": "DISCOVERY — verify important signals against a primary source."
-    },
-    {
       "id": "seed-climate",
       "priority": "medium",
       "country": "Global",
@@ -149,45 +136,6 @@
       "url": "https://intabaco.gob.do/noticias/intabaco-participa-en-operativos-de-veda-agricola-2026/",
       "date": "2026",
       "automatic": false
-    },
-    {
-      "id": "auto-drew-estate-introduces-limited-edition-pappy-van-winkle-triplet-sampler-premium-cigar-association-https-news-g",
-      "priority": "low",
-      "country": "Global",
-      "stage": "Industry",
-      "source": "Google News Discovery",
-      "title": "Drew Estate Introduces Limited-Edition Pappy Van Winkle Triplet Sampler - Premium Cigar Association",
-      "description": "Drew Estate Introduces Limited-Edition Pappy Van Winkle Triplet Sampler &nbsp;&nbsp; Premium Cigar Association",
-      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9KNVF2NndQQl90YmFXdnE3RTRBWTYxUHd4cldYa2g4bmljb1hnV1VUa0d3dVh4dll5MnhkaTNGYnMyc3FlS1UyYnF3Q3YxNEdSSDBUWTNZM3E2ZEhnZEJydmJhODhVNFFkSzZ5S24tZFJpLWJlR2FMbTVRNA?oc=5",
-      "date": "2026-11-23T23:42:40+00:00",
-      "automatic": true,
-      "verification": "DISCOVERY — verify important signals against a primary source."
-    },
-    {
-      "id": "auto-quality-importers-president-marilyn-florez-giordano-acquires-empire-social-brickell-premium-cigar-association-",
-      "priority": "low",
-      "country": "Global",
-      "stage": "Ownership / strategy",
-      "source": "Google News Discovery",
-      "title": "Quality Importers President Marilyn Florez-Giordano Acquires Empire Social Brickell - Premium Cigar Association",
-      "description": "Quality Importers President Marilyn Florez-Giordano Acquires Empire Social Brickell &nbsp;&nbsp; Premium Cigar Association",
-      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQNTVwWjFDV1BLcWk0R0phTy04UVJONDFHQVBsZTlWVTF5WmdOSXczRHNCeDdfd29MSVpkQ0kydklKZEJCeWdOMkZkVzNFU0lYMEpfZjRGX1l2Z2RTVWtpNHlzYS1Ya29aN0RfWEpUTzRKX0xqckdsdlNaTHJLWGhwZjRZUVltMGlZcnc?oc=5",
-      "date": "2026-11-23T19:46:55+00:00",
-      "automatic": true,
-      "verification": "DISCOVERY — verify important signals against a primary source."
-    },
-    {
-      "id": "auto-doha-a-conversation-about-the-future-of-the-premium-cigar-industry-cigar-journal-https-news-google-com-rss-art",
-      "priority": "low",
-      "country": "Global",
-      "stage": "Industry",
-      "source": "Google News Discovery",
-      "title": "Doha: A Conversation About the Future of the Premium Cigar Industry - Cigar Journal",
-      "description": "Doha: A Conversation About the Future of the Premium Cigar Industry &nbsp;&nbsp; Cigar Journal",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQd0dQb0Y0aGdMelZZOXRnXy1oZUhRSDhlX04yeGpySFlmWUxLbnRVWTFPVkdERnRWYTM4R1F1bG5FalVLM2RzWU1FRks5eURkQ2hsTFRzWngtRDJqSWJRSWpKcm92ZzA5U25ja0xqNjhsaWVSZUgtdDlCMFV0dzZZRWl0c0RzalQ3ZG9UYmI1aHlyWkxjMWI0Zmt3UjY?oc=5",
-      "date": "2026-11-19T09:11:31+00:00",
-      "automatic": true,
-      "verification": "DISCOVERY — verify important signals against a primary source."
     }
   ],
   "source_feeds": [
